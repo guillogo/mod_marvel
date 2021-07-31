@@ -26,8 +26,21 @@
 defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
-    // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedIf
+
+    $settings = new admin_settingpage('mod_marvel', get_string('pluginname', 'mod_marvel'), 'moodle/site:config');
+
     if ($ADMIN->fulltree) {
-        // TODO: Define the plugin settings page - {@link https://docs.moodle.org/dev/Admin_settings}.
+        $settings->add(new admin_setting_heading('mod_marvel/api',
+            new lang_string('settings:api:header', 'mod_marvel'), ''));
+
+        $settings->add(new admin_setting_configtext('mod_marvel/publickey',
+            get_string('settings:publickey', 'mod_marvel' ),
+            get_string('settings:publickey_desc', 'mod_marvel'),
+            '', PARAM_TEXT));
+
+        $settings->add(new admin_setting_configtext('mod_marvel/privatekey',
+            get_string('settings:privatekey', 'mod_marvel' ),
+            get_string('settings:privatekey_desc', 'mod_marvel'),
+            '', PARAM_TEXT));
     }
 }

@@ -25,8 +25,18 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+$string['admiapi'] = 'API';
+$string['marvelname'] = 'Marvel list name';
+$string['marvelname_help'] = 'Enter the Marvel list name';
+
 $string['modulename'] = 'Marvel list';
 $string['modulename_help'] = 'This activity ......';
 $string['modulenameplural'] = 'Marvel lists';
 $string['no$marvelinstances'] = 'There are no Marvel modules in this course.';
 $string['pluginname'] = 'Marvel list';
+
+$string['settings:api:header'] = 'API';
+$string['settings:publickey'] = 'Public key';
+$string['settings:publickey_desc'] = 'Add the public key to connect to Marvel API';
+$string['settings:privatekey'] = 'Private key';
+$string['settings:privatekey_desc'] = 'Add the private key to connect to Marvel API';
