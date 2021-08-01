@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Plugin version and other meta-data are defined here.
+ * Capability definitions for the marvel list module.
  *
  * @package     mod_marvel
  * @copyright   2021 Guillermo Gomez <guigomar@gmail.com>
@@ -24,8 +24,28 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'mod_marvel';
-$plugin->release = '0.1.0';
-$plugin->version = 2021080101;
-$plugin->requires = 2021051700;
-$plugin->maturity = MATURITY_ALPHA;
+$capabilities = [
+    // Ability to see that the marvel list exists, and the basic information about it.
+    'mod/marvel:view' => [
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => [
+            'guest' => CAP_ALLOW,
+            'student' => CAP_ALLOW,
+            'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ]
+    ],
+    // Ability to add a new marvel list to the course.
+    'mod/marvel:addinstance' => [
+        'riskbitmask' => RISK_XSS,
+        'captype' => 'write',
+        'contextlevel' => CONTEXT_COURSE,
+        'archetypes' => [
+            'editingteacher' => CAP_ALLOW,
+            'manager' => CAP_ALLOW
+        ],
+        'clonepermissionsfrom' => 'moodle/course:manageactivities'
+    ],
+];

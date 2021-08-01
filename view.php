@@ -46,8 +46,8 @@ if ($id) {
 }
 
 require_login($course, true, $cm);
-
 $modulecontext = context_module::instance($cm->id);
+require_capability('mod/marvel:view', $modulecontext);
 
 $event = \mod_marvel\event\course_module_viewed::create(array(
     'objectid' => $moduleinstance->id,

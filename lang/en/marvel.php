@@ -32,6 +32,9 @@ $string['list'] = 'Marvel list to display';
 $string['list_help'] = 'Please select a Marvel list to display to students';
 $string['listsettings'] = 'List settings';
 
+$string['marvel:addinstance'] = 'Add a new Marvel list';
+$string['marvel:view'] = 'View Marvel list';
+
 $string['modulename'] = 'Marvel list';
 $string['modulename_help'] = 'This activity will consume the Marvel API';
 $string['modulenameplural'] = 'Marvel lists';
@@ -39,6 +42,7 @@ $string['no$marvelinstances'] = 'There are no Marvel lists in this course.';
 
 $string['pluginadministration'] = 'Marvel list administration';
 $string['pluginname'] = 'Marvel list';
+$string['privacy:metadata'] = 'The Marvel list plugin does not store any personal data, for now.';
 
 $string['settings:api:header'] = 'API';
 $string['settings:publickey'] = 'Public key';
