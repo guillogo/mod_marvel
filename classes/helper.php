@@ -24,6 +24,9 @@
 
 namespace mod_marvel;
 
+use curl;
+use stdClass;
+
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -34,21 +37,100 @@ defined('MOODLE_INTERNAL') || die();
 class helper {
 
     /**
-     * Gets the list of choices to select by professor.
+     * Defines the waiting for analysis status.
+     */
+    const ENDPOINT = "https://gateway.marvel.com/v1/public/";
+
+    /**
+     * Status OK.
+     */
+    const STATUSOK = 200;
+
+    /**
+     * Expiry period for caches.
      *
      */
-    public static function get_list_options() {
+    const DAY = 60 * 60 * 24; // One day.
+
+    /**
+     * Gets the list of choices to select by professor.
+     *
+     * @return array choices.
+     */
+    public static function get_list_options() : array {
         $choices =
             [
                 'characters' => 'Characters',
                 'comics' => 'Comics',
-                'crators' => 'Crators',
+                'creators' => 'Creators',
                 'events' => 'Events',
                 'series' => 'Series',
                 'stories' => 'Stories',
-
             ];
         return $choices;
     }
 
+    /**
+     * Gets the object with Marvel information.
+     *
+     * @param string $listtype Type on list (e.g.: characters)
+     * @param string|null $id Marvel ID item
+     * @param int $limit Limit value
+     * @param int $offset offset value
+     * @return stdClass Marvel list object.
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function get_marvel_list(string $listtype, string $id = null, int $limit = 100, int $offset = 0): stdClass {
+        $endpoint = self::ENDPOINT;
+        $timestamp = time();
+        $publickey = get_config('mod_marvel', 'publickey');
+        $privatekey = get_config('mod_marvel', 'privatekey');
+        $checksum = md5($timestamp . $privatekey . $publickey);
+
+        $curl = new curl();
+        $marvelid = null;
+        if ($id) {
+            $marvelid = '/' . $id . '/';
+        }
+        $url = $endpoint . $listtype . $marvelid . '?ts=' . $timestamp . '&apikey=' . $publickey . '&hash=' . $checksum .
+            '&limit=' . $limit . '&offset=' . $offset;
+
+        // Try to get value from cache (Cache the data for 1 day).
+        $date = strtotime(date("Y-m-d",time())) - self::DAY;
+        $checksumtocache = md5('1' . $privatekey . $publickey);
+        $cachekey = (string)$date . '_' . $listtype . '_' . $checksumtocache . '_' . $id;
+        $cache = \cache::make('mod_marvel', 'listsbydate');
+        $data = $cache->get($cachekey);
+
+        if ($data && (time() < $data->expiry)) { // Valid cache data.
+            $list = $data->list;
+        } else {
+            $list = json_decode($curl->get($url));
+
+            // Update cache.
+            if (!empty($list)) {
+                $expiry = time() + self::DAY;
+                $data = new \stdClass();
+                $data->expiry = $expiry;
+                $data->list = $list;
+                $cache->set($cachekey, $data);
+            }
+        }
+
+        return $list;
+    }
+
+    /**
+     * Gets the thumbnail url from an object.
+     *
+     * @param stdClass $thumbnail Thumbnail object
+     * @return \moodle_url|null Thumbnail url.
+     */
+    public static function get_thumbnail_url(stdClass $thumbnail): ?\moodle_url {
+        if (isset($thumbnail->path) && isset($thumbnail->extension)) {
+            return new \moodle_url($thumbnail->path . '.' . $thumbnail->extension);
+        }
+        return null;
+    }
 }

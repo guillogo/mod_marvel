@@ -22,8 +22,12 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_marvel\helper;
+use mod_marvel\table\characters_table;
+
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
+require_once('../../lib/tablelib.php');
 
 // Course module id.
 $id = optional_param('id', 0, PARAM_INT);
@@ -53,11 +57,33 @@ $event->add_record_snapshot('course', $course);
 $event->add_record_snapshot('marvel', $moduleinstance);
 $event->trigger();
 
-$PAGE->set_url('/mod/marvel/view.php', array('id' => $cm->id));
+$url = new moodle_url('/mod/marvel/view.php', array('id' => $cm->id));
+$download = optional_param('download', '', PARAM_ALPHA);
+$page = optional_param('page', 0, PARAM_INT);
+
+$PAGE->set_url($url);
 $PAGE->set_title(format_string($moduleinstance->name));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->set_context($modulecontext);
 
-echo $OUTPUT->header();
+// Get the Marvel list.
+$marvellist =  helper::get_marvel_list($moduleinstance->list);
 
-echo $OUTPUT->footer();
+if ($marvellist->code === helper::STATUSOK) {
+    $table = new characters_table('marvel_list', $url, $marvellist, $download, $page);
+    if (!$table->is_downloading()) {
+        echo $OUTPUT->header();
+    }
+    $table->out(10, false);
+
+    if (!$table->is_downloading()) {
+        // Display the copyright;
+        echo $OUTPUT->render_from_template('mod_marvel/copyright', ['attributionhtml' => $marvellist->attributionHTML]);
+        echo $OUTPUT->footer();
+    }
+
+} else {
+    echo $OUTPUT->header();
+    echo $OUTPUT->notification($marvellist->code . ' - ' . $marvellist->message);
+    echo $OUTPUT->footer();
+}

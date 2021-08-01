@@ -45,3 +45,11 @@ $string['settings:publickey'] = 'Public key';
 $string['settings:publickey_desc'] = 'Add the public key to connect to Marvel API';
 $string['settings:privatekey'] = 'Private key';
 $string['settings:privatekey_desc'] = 'Add the private key to connect to Marvel API';
+
+$string['table:thumbnail'] = 'Thumbnail';
+$string['table:id'] = 'Id';
+$string['table:name'] = 'Name';
+$string['table:description'] = 'Description';
+$string['table:viewcomics'] = 'View comics';
+
+$string['viewcontent'] = 'View content';
