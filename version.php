@@ -26,6 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'mod_marvel';
 $plugin->release = '0.1.0';
-$plugin->version = 2021073101;
+$plugin->version = 2021073102;
 $plugin->requires = 2021051700;
 $plugin->maturity = MATURITY_ALPHA;

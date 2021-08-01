@@ -55,7 +55,6 @@ function marvel_add_instance($moduleinstance, $mform = null) {
     global $DB;
 
     $moduleinstance->timecreated = time();
-    var_dump($moduleinstance);
 
     $id = $DB->insert_record('marvel', $moduleinstance);
 

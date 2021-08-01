@@ -67,7 +67,7 @@ $PAGE->set_heading(format_string(helper::get_list_options()[$moduleinstance->lis
 $PAGE->set_context($modulecontext);
 
 // Get the Marvel list.
-$marvellist =  helper::get_marvel_list($moduleinstance->list);
+$marvellist = helper::get_marvel_list($moduleinstance->list);
 // If the status is OK display the data into the table.
 if ($marvellist->code === helper::STATUSOK) {
     $table = new marvel_table('marvel_list', $url, $marvellist, $moduleinstance->list, $download, $page);
