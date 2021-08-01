@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Table to display the Marvel data.
+ * Table to display the Marvel comic data.
  *
  * @package     mod_marvel
  * @copyright   2021 Guillermo Gomez <guigomar@gmail.com>
@@ -28,7 +28,7 @@ use mod_marvel\helper;
 use table_sql;
 use stdClass;
 
-class characters_table extends table_sql implements \renderable {
+class marvel_table extends table_sql implements \renderable {
     /**
      * @var int A current page number.
      */
@@ -40,14 +40,20 @@ class characters_table extends table_sql implements \renderable {
     protected $marvellist;
 
     /**
+     * @var string The Marvel type of list.
+     */
+    protected $listtype;
+
+    /**
      * Constructor.
      */
-    public function __construct($uniqueid, \moodle_url $url, $marvellist, $download = '', $page = 0, $perpage = 100) {
+    public function __construct($uniqueid, \moodle_url $url, $marvellist, $listtype, $download = '', $page = 0, $perpage = 100) {
         parent::__construct($uniqueid);
 
         $this->pagesize = $perpage;
         $this->page = $page;
         $this->marvellist = $marvellist;
+        $this->listtype = $listtype;
 
         // Define columns in the table.
         $this->define_table_columns();
@@ -70,7 +76,6 @@ class characters_table extends table_sql implements \renderable {
                 'id',
                 'name',
                 'description',
-                'comics',
             ];
 
         $headers =
@@ -79,8 +84,27 @@ class characters_table extends table_sql implements \renderable {
                 get_string('table:id', 'mod_marvel'),
                 get_string('table:name', 'mod_marvel'),
                 get_string('table:description', 'mod_marvel'),
-                get_string('table:viewcomics', 'mod_marvel'),
             ];
+
+        // Get the custom columns depending on the type of list.
+        if ($this->listtype === 'comics') {
+            $extracolumns =
+                [
+                    'variantDescription',
+                    'viewmore'
+                ];
+            $extraheaders =
+                [
+                    get_string('table:variantdescription', 'mod_marvel'),
+                    get_string('table:viewcharacters', 'mod_marvel'),
+                ];
+        } else {
+            $extracolumns = ['viewmore'];
+            $extraheaders = [get_string('table:viewcomics', 'mod_marvel')];
+        }
+
+        $columns = array_merge($columns, $extracolumns);
+        $headers = array_merge($headers, $extraheaders);
 
         $this->define_columns($columns);
         $this->define_headers($headers);
@@ -115,13 +139,19 @@ class characters_table extends table_sql implements \renderable {
 
         // Get the Marvel data for each record.
         $listdata = [];
-        //var_dump($this->marvellist->data->results);
         foreach ($this->marvellist->data->results as $marvelitem) {
             $item = new stdClass();
             $item->thumbnail = $marvelitem->thumbnail;
             $item->id = $marvelitem->id;
-            $item->name = $marvelitem->name;
+            if ($this->listtype === 'characters') {
+                $item->name = $marvelitem->name;
+            } elseif ($this->listtype === 'creators') {
+                $item->name = $marvelitem->fullName;
+            } else {
+                $item->name = $marvelitem->title;
+            }
             $item->description = $marvelitem->description;
+            $item->variantDescription = $marvelitem->variantDescription;
             $item->viewcomicurl = null;//helper::get_comicurl_by_character($marvelitem->id);
             $listdata[] = $item;
         }
@@ -152,7 +182,11 @@ class characters_table extends table_sql implements \renderable {
     public function col_thumbnail($values) {
         global $OUTPUT;
 
-        $thumbnailurl = helper::get_thumbnail_url($values->thumbnail);
+        if ($values->thumbnail) {
+            $thumbnailurl = helper::get_thumbnail_url($values->thumbnail);
+        } else {
+            $thumbnailurl = 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg';
+        }
         if ($this->is_downloading()) {
             return $thumbnailurl;
         }
@@ -171,7 +205,7 @@ class characters_table extends table_sql implements \renderable {
      * @param object $values Contains object with all the values of record.
      * @return string Return view more icon template rendered.
      */
-    public function col_comics($values) {
+    public function col_viewmore($values) {
         global $OUTPUT;
 
         if ($this->is_downloading()) {

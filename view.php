@@ -23,7 +23,7 @@
  */
 
 use mod_marvel\helper;
-use mod_marvel\table\characters_table;
+use mod_marvel\table\marvel_table;
 
 require(__DIR__.'/../../config.php');
 require_once(__DIR__.'/lib.php');
@@ -63,14 +63,14 @@ $page = optional_param('page', 0, PARAM_INT);
 
 $PAGE->set_url($url);
 $PAGE->set_title(format_string($moduleinstance->name));
-$PAGE->set_heading(format_string($course->fullname));
+$PAGE->set_heading(format_string(helper::get_list_options()[$moduleinstance->list]));
 $PAGE->set_context($modulecontext);
 
 // Get the Marvel list.
 $marvellist =  helper::get_marvel_list($moduleinstance->list);
-
+// If the status is OK display the data into the table.
 if ($marvellist->code === helper::STATUSOK) {
-    $table = new characters_table('marvel_list', $url, $marvellist, $download, $page);
+    $table = new marvel_table('marvel_list', $url, $marvellist, $moduleinstance->list, $download, $page);
     if (!$table->is_downloading()) {
         echo $OUTPUT->header();
     }
@@ -81,7 +81,6 @@ if ($marvellist->code === helper::STATUSOK) {
         echo $OUTPUT->render_from_template('mod_marvel/copyright', ['attributionhtml' => $marvellist->attributionHTML]);
         echo $OUTPUT->footer();
     }
-
 } else {
     echo $OUTPUT->header();
     echo $OUTPUT->notification($marvellist->code . ' - ' . $marvellist->message);

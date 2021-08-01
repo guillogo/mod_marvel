@@ -74,14 +74,14 @@ class helper {
      * Gets the object with Marvel information.
      *
      * @param string $listtype Type on list (e.g.: characters)
-     * @param string|null $id Marvel ID item
+     * @param string|null $additionaldata Marvel ID item
      * @param int $limit Limit value
      * @param int $offset offset value
      * @return stdClass Marvel list object.
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function get_marvel_list(string $listtype, string $id = null, int $limit = 100, int $offset = 0): stdClass {
+    public static function get_marvel_list(string $listtype, string $additionaldata = null, int $limit = 100, int $offset = 0): stdClass {
         $endpoint = self::ENDPOINT;
         $timestamp = time();
         $publickey = get_config('mod_marvel', 'publickey');
@@ -90,8 +90,8 @@ class helper {
 
         $curl = new curl();
         $marvelid = null;
-        if ($id) {
-            $marvelid = '/' . $id . '/';
+        if ($additionaldata) {
+            $marvelid = '/' . $additionaldata;
         }
         $url = $endpoint . $listtype . $marvelid . '?ts=' . $timestamp . '&apikey=' . $publickey . '&hash=' . $checksum .
             '&limit=' . $limit . '&offset=' . $offset;
@@ -99,7 +99,7 @@ class helper {
         // Try to get value from cache (Cache the data for 1 day).
         $date = strtotime(date("Y-m-d",time())) - self::DAY;
         $checksumtocache = md5('1' . $privatekey . $publickey);
-        $cachekey = (string)$date . '_' . $listtype . '_' . $checksumtocache . '_' . $id;
+        $cachekey = (string)$date . '_' . $listtype . '_' . $checksumtocache . '_' . $additionaldata;
         $cache = \cache::make('mod_marvel', 'listsbydate');
         $data = $cache->get($cachekey);
 

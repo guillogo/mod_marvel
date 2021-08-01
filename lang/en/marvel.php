@@ -50,6 +50,8 @@ $string['table:thumbnail'] = 'Thumbnail';
 $string['table:id'] = 'Id';
 $string['table:name'] = 'Name';
 $string['table:description'] = 'Description';
+$string['table:variantdescription'] = 'Variant Description';
 $string['table:viewcomics'] = 'View comics';
+$string['table:viewcharacters'] = 'View Characters';
 
 $string['viewcontent'] = 'View content';
