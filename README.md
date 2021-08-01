@@ -1,32 +1,42 @@
 # Marvel lists #
 
-TODO Describe the plugin shortly here.
+This module use the Marvel API to display:
 
-TODO Provide more detailed description here.
+- Characters
+- Comics
+- Stories
+- Events
+- Creators
 
-## Installing via uploaded ZIP file ##
+More information: https://developer.marvel.com/docs
 
-1. Log in to your Moodle site as an admin and go to _Site administration >
-   Plugins > Install plugins_.
-2. Upload the ZIP file with the plugin code. You should only be prompted to add
-   extra details if your plugin type is not automatically detected.
-3. Check the plugin validation report and finish the installation.
+## Configuration ##
+You will need a public and private key to display the different lists. Add your keys in: `/admin/settings.php?section=mod_marvel`.
 
-## Installing manually ##
+## Branches ##
+The following maps the plugin version to use depending on your Moodle version.
 
-The plugin can be also installed by putting the contents of this directory to
+| Moodle version    | Branch      |
+| ----------------- | ----------- |
+| Moodle 3.11+      | main        |
 
-    {your/moodle/dirroot}/mod/marvel
 
-Afterwards, log in to your Moodle site as an admin and go to _Site administration >
-Notifications_ to complete the installation.
+## Installing ##
+1. Install the plugin the same as any standard moodle plugin either via the Moodle plugin directory, or you can use git to clone it into your source:
 
-Alternatively, you can run
+`git clone git@github.com:guillogo/mod_marvel.git mod/marvel`
 
-    $ php admin/cli/upgrade.php
+2. Then run the Moodle upgrade
 
-to complete the installation from the command line.
+## Unit test ##
+you need to edit the config.php file to add the following configuration information near the end, but before the `require_once(dirname(__FILE__) . '/lib/setup.php');`.
 
+(Replace xxxxpublickeyxxxx with your publickey and xxxxprivatexxxx with your privatekey) 
+
+```
+define('MARVELTESTPRIVATEKEY', 'xxxxprivatexxxx');
+define('MARVELTESTPUBLICKEY', 'xxxxpublickeyxxxx');
+```
 ## License ##
 
 2021 Guillermo Gomez <guigomar@gmail.com>
