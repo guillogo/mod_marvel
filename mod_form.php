@@ -22,6 +22,8 @@
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use mod_marvel\helper;
+
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot.'/course/moodleform_mod.php');
@@ -59,17 +61,14 @@ class mod_marvel_mod_form extends moodleform_mod {
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('name', 'marvelname', 'mod_marvel');
 
-        // Adding the standard "intro" and "introformat" fields.
-        if ($CFG->branch >= 29) {
-            $this->standard_intro_elements();
-        } else {
-            $this->add_intro_editor();
-        }
+       $this->standard_intro_elements();
 
-        // Adding the rest of mod_marvel settings, spreading all them into this fieldset
-        // ... or adding more fieldsets ('header' elements) if needed for better logic.
-        $mform->addElement('static', 'label1', 'marvelsettings', get_string('marvelsettings', 'mod_marvel'));
-        $mform->addElement('header', 'marvelfieldset', get_string('marvelfieldset', 'mod_marvel'));
+        // Adding the list of options to display in the Marvel list activity.
+        $mform->addElement('header', 'listsettings', get_string('listsettings', 'mod_marvel'));
+        $options = ['multiple' => false];
+        $mform->addElement('autocomplete', 'list', get_string('list', 'mod_marvel'),
+            helper::get_list_options(), $options);
+        $mform->addHelpButton('list', 'list', 'mod_marvel');
 
         // Add standard elements.
         $this->standard_coursemodule_elements();

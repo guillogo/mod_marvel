@@ -25,14 +25,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['admiapi'] = 'API';
 $string['marvelname'] = 'Marvel list name';
 $string['marvelname_help'] = 'Enter the Marvel list name';
 
+$string['list'] = 'Marvel list to display';
+$string['list_help'] = 'Please select a Marvel list to display to students';
+$string['listsettings'] = 'List settings';
+
 $string['modulename'] = 'Marvel list';
-$string['modulename_help'] = 'This activity ......';
+$string['modulename_help'] = 'This activity will consume the Marvel API';
 $string['modulenameplural'] = 'Marvel lists';
-$string['no$marvelinstances'] = 'There are no Marvel modules in this course.';
+$string['no$marvelinstances'] = 'There are no Marvel lists in this course.';
+
+$string['pluginadministration'] = 'Marvel list administration';
 $string['pluginname'] = 'Marvel list';
 
 $string['settings:api:header'] = 'API';

@@ -1,5 +1,5 @@
 <?php
-// This file is part of Moodle - https://moodle.org/
+// This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -12,35 +12,43 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with Moodle.  If not, see <https://www.gnu.org/licenses/>.
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy Subsystem implementation for mod_marvel.
+ * Library functions used by db/install.php.
  *
  * @package     mod_marvel
  * @copyright   2021 Guillermo Gomez <guigomar@gmail.com>
  * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace mod_marvel\privacy;
+namespace mod_marvel;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Privacy Subsystem for mod_marvel implementing null_provider.
+ * Class helper contains all library functions.
  *
- * @copyright   2021 Guillermo Gomez <guigomar@gmail.com>
- * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package mod_marvel
  */
-class provider implements \core_privacy\local\metadata\null_provider {
+class helper {
 
     /**
-     * Get the language string identifier with the component's language
-     * file to explain why this plugin stores no data.
+     * Gets the list of choices to select by professor.
      *
-     * @return  string
      */
-    public static function get_reason() : string {
-        return 'privacy:metadata';
+    public static function get_list_options() {
+        $choices =
+            [
+                'characters' => 'Characters',
+                'comics' => 'Comics',
+                'crators' => 'Crators',
+                'events' => 'Events',
+                'series' => 'Series',
+                'stories' => 'Stories',
+
+            ];
+        return $choices;
     }
+
 }
