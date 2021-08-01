@@ -39,8 +39,8 @@ class helper_test extends \advanced_testcase {
 
         // To test connection constant should be set up in config.php.
         if (defined('MARVELTESTPRIVATEKEY') && defined('MARVELTESTPRIVATEKEY')) {
-            set_config('privatekey',MARVELTESTPRIVATEKEY, 'mod_marvel');
-            set_config('publickey',MARVELTESTPUBLICKEY, 'mod_marvel');
+            set_config('privatekey', MARVELTESTPRIVATEKEY, 'mod_marvel');
+            set_config('publickey', MARVELTESTPUBLICKEY, 'mod_marvel');
 
             $marvellist = helper::get_marvel_list('characters', null, 5, 0);
             if (isset($marvellist->code)) {
@@ -61,8 +61,8 @@ class helper_test extends \advanced_testcase {
         }
 
         // Test wrong API keys.
-        set_config('privatekey',1, 'mod_marvel');
-        set_config('publickey',1, 'mod_marvel');
+        set_config('privatekey', 1, 'mod_marvel');
+        set_config('publickey', 1, 'mod_marvel');
 
         $marvellist = helper::get_marvel_list('characters', null, 5, 0);
         $this->assertEquals($marvellist->code, 'InvalidCredentials');

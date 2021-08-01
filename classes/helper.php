@@ -81,7 +81,8 @@ class helper {
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function get_marvel_list(string $listtype, string $additionaldata = null, int $limit = 100, int $offset = 0): stdClass {
+    public static function get_marvel_list(string $listtype, string $additionaldata = null,
+                                           int $limit = 100, int $offset = 0): stdClass {
         $endpoint = self::ENDPOINT;
         $timestamp = time();
         $publickey = get_config('mod_marvel', 'publickey');
@@ -97,7 +98,7 @@ class helper {
             '&limit=' . $limit . '&offset=' . $offset;
 
         // Try to get value from cache (Cache the data for 1 day).
-        $date = strtotime(date("Y-m-d",time())) - self::DAY;
+        $date = strtotime(date("Y-m-d", time())) - self::DAY;
         $checksumtocache = md5('1' . $privatekey . $publickey);
         $cachekey = (string)$date . '_' . $listtype . '_' . $checksumtocache . '_' . $additionaldata;
         $cache = \cache::make('mod_marvel', 'listsbydate');

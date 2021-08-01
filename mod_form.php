@@ -49,7 +49,7 @@ class mod_marvel_mod_form extends moodleform_mod {
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
         // Adding the standard "name" field.
-        $mform->addElement('text', 'name', get_string('marvelname', 'mod_marvel'), array('size' => '64'));
+        $mform->addElement('text', 'name', get_string('marvelname', 'mod_marvel'), ['size' => '64']);
 
         if (!empty($CFG->formatstringstriptags)) {
             $mform->setType('name', PARAM_TEXT);
@@ -61,7 +61,7 @@ class mod_marvel_mod_form extends moodleform_mod {
         $mform->addRule('name', get_string('maximumchars', '', 255), 'maxlength', 255, 'client');
         $mform->addHelpButton('name', 'marvelname', 'mod_marvel');
 
-       $this->standard_intro_elements();
+        $this->standard_intro_elements();
 
         // Adding the list of options to display in the Marvel list activity.
         $mform->addElement('header', 'listsettings', get_string('listsettings', 'mod_marvel'));
@@ -69,6 +69,7 @@ class mod_marvel_mod_form extends moodleform_mod {
         $mform->addElement('autocomplete', 'list', get_string('list', 'mod_marvel'),
             helper::get_list_options(), $options);
         $mform->addHelpButton('list', 'list', 'mod_marvel');
+        $mform->addRule('list', null, 'required', null, 'client');
 
         // Add standard elements.
         $this->standard_coursemodule_elements();

@@ -54,7 +54,7 @@ class backup_marvel_activity_structure_step extends backup_activity_structure_st
         // Build the tree
         // (No tree).
 
-        // Define sources
+        // Define sources.
         $marvel->set_source_table('marvel', ['id' => backup::VAR_ACTIVITYID]);
 
         // Define id annotations

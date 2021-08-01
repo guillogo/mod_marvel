@@ -145,7 +145,7 @@ class marvel_table extends table_sql implements \renderable {
             $item->id = $marvelitem->id;
             if ($this->listtype === 'characters') {
                 $item->name = $marvelitem->name;
-            } elseif ($this->listtype === 'creators') {
+            } else if ($this->listtype === 'creators') {
                 $item->name = $marvelitem->fullName;
             } else {
                 $item->name = $marvelitem->title;

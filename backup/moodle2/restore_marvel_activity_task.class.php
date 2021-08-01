@@ -36,7 +36,7 @@ class restore_marvel_activity_task extends restore_activity_task {
      * Defines particular settings that this activity can have.
      */
     protected function define_my_settings() : void {
-        // No particular settings for this activity;
+        // No particular settings for this activity.
     }
 
     /**

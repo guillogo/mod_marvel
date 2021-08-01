@@ -77,7 +77,7 @@ if ($marvellist->code === helper::STATUSOK) {
     $table->out(10, false);
 
     if (!$table->is_downloading()) {
-        // Display the copyright;
+        // Display the copyright.
         echo $OUTPUT->render_from_template('mod_marvel/copyright', ['attributionhtml' => $marvellist->attributionHTML]);
         echo $OUTPUT->footer();
     }

@@ -64,7 +64,7 @@ class restore_marvel_activity_structure_step extends restore_activity_structure_
      * Defines post-execution actions.
      */
     protected function after_execute(): void {
-        // Add marvel related files, no need to match by itemname (just internally handled context)
+        // Add marvel related files, no need to match by itemname (just internally handled context).
         $this->add_related_files('mod_marvel', 'intro', null);
     }
 }
