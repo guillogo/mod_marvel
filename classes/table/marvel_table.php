@@ -91,16 +91,16 @@ class marvel_table extends table_sql implements \renderable {
             $extracolumns =
                 [
                     'variantDescription',
-                    'viewmore'
+                    'details'
                 ];
             $extraheaders =
                 [
                     get_string('table:variantdescription', 'mod_marvel'),
-                    get_string('table:viewcharacters', 'mod_marvel'),
+                    get_string('table:details', 'mod_marvel'),
                 ];
         } else {
-            $extracolumns = ['viewmore'];
-            $extraheaders = [get_string('table:viewcomics', 'mod_marvel')];
+            $extracolumns = ['details'];
+            $extraheaders = [get_string('table:details', 'mod_marvel')];
         }
 
         $columns = array_merge($columns, $extracolumns);
@@ -152,7 +152,22 @@ class marvel_table extends table_sql implements \renderable {
             }
             $item->description = $marvelitem->description;
             $item->variantDescription = $marvelitem->variantDescription;
-            $item->viewcomicurl = null;//helper::get_comicurl_by_character($marvelitem->id);
+            $item->viewmore = [];
+            if (isset($marvelitem->comics)) {
+                $item->viewmore[] = ['name' => 'Comics', 'count' => $marvelitem->comics->available];
+            }
+            if (isset($marvelitem->characters)) {
+                $item->viewmore[] = ['name' => 'Characters', 'count' => $marvelitem->characters->available];
+            }
+            if (isset($marvelitem->events)) {
+                $item->viewmore[] = ['name' => 'Events', 'count' => $marvelitem->events->available];
+            }
+            if (isset($marvelitem->creators)) {
+                $item->viewmore[] = ['name' => 'Creators', 'count' => $marvelitem->creators->available];
+            }
+            if (isset($marvelitem->stories)) {
+                $item->viewmore[] = ['name' => 'Stories', 'count' => $marvelitem->stories->available];
+            }
             $listdata[] = $item;
         }
 
@@ -205,16 +220,26 @@ class marvel_table extends table_sql implements \renderable {
      * @param object $values Contains object with all the values of record.
      * @return string Return view more icon template rendered.
      */
-    public function col_viewmore($values) {
+    public function col_details($values) {
         global $OUTPUT;
 
         if ($this->is_downloading()) {
             return $values->viewcomicurl;
         }
 
+        if ($values->thumbnail) {
+            $thumbnailurl = helper::get_thumbnail_url($values->thumbnail);
+        } else {
+            $thumbnailurl = 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg';
+        }
+
         $args = [
-            'url' => $values->viewcomicurl,
+            'id' => $values->id,
+            'url' => $thumbnailurl,
+            'name' => $values->name,
+            'description' => $values->description,
+            'moreinfo' => $values->viewmore,
         ];
-        return $OUTPUT->render_from_template('mod_marvel/viewmore', $args);
+        return $OUTPUT->render_from_template('mod_marvel/viewmore_modal', $args);
     }
 }
