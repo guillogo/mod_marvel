@@ -50,6 +50,9 @@ class mod_marvel_generator extends testing_module_generator {
 
         $record->timecreated = time();
         $record->timemodify = time();
+        if (!isset($record->list) || !$record->list) {
+            $record->list = 'characters';
+        }
 
         return parent::create_instance($record, (array)$options);
     }
