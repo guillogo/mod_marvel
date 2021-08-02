@@ -26,6 +26,13 @@ namespace mod_marvel;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class helper_test to test connection.
+ *
+ * @package     mod_marvel
+ * @copyright   2021 Guillermo Gomez <guigomar@gmail.com>
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class helper_test extends \advanced_testcase {
 
     /**

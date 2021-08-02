@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Library functions used by db/install.php.
+ * Library functions used by marvel_test.php and view.php.
  *
  * @package     mod_marvel
  * @copyright   2021 Guillermo Gomez <guigomar@gmail.com>

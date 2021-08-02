@@ -28,8 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/mod/marvel/backup/moodle2/backup_marvel_stepslib.php');
 
 /**
- * choice backup task that provides all the settings and steps to perform one
- * complete backup of the activity
+ * Choice backup task that provides all the settings and steps to perform one complete backup of the activity.
  */
 class backup_marvel_activity_task extends backup_activity_task {
 
@@ -50,8 +49,10 @@ class backup_marvel_activity_task extends backup_activity_task {
     }
 
     /**
-     * Code the transformations to perform in the activity in
-     * order to get transportable (encoded) links
+     * Encodes URLs to the index.php and view.php scripts
+     *
+     * @param string $content some HTML text that eventually contains URLs to the activity instance scripts
+     * @return string the content with the URLs encoded
      */
     public static function encode_content_links($content) {
         global $CFG;

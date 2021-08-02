@@ -28,6 +28,11 @@ use mod_marvel\helper;
 use table_sql;
 use stdClass;
 
+/**
+ * Class marvel_table to display the Marvel comic data.
+ *
+ * @package mod_marvel
+ */
 class marvel_table extends table_sql implements \renderable {
     /**
      * @var int A current page number.
@@ -46,6 +51,14 @@ class marvel_table extends table_sql implements \renderable {
 
     /**
      * Constructor.
+     *
+     * @param string $uniqueid a string identifying this table.Used as a key in session  vars.
+     * @param \moodle_url $url
+     * @param stdClass $marvellist
+     * @param string $listtype
+     * @param string $download
+     * @param int $page
+     * @param int $perpage
      */
     public function __construct($uniqueid, \moodle_url $url, $marvellist, $listtype, $download = '', $page = 0, $perpage = 100) {
         parent::__construct($uniqueid);
